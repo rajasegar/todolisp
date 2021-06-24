@@ -4,4 +4,6 @@
     :depends-on (#:cl-who
                 #:hunchentoot
                 #:parenscript)
-    :components ((:file "todo")))
+    :components ((:file "package")
+		 (:file "application")
+		 ))

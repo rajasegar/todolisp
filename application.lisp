@@ -1,6 +1,3 @@
-(defpackage :todo
-  (:use :cl :cl-who :hunchentoot :parenscript))
-
 (in-package :todo)
 
 (defclass todo ()
@@ -44,8 +41,6 @@
                                    (:h1 "Todo,Lisp!")
                 ,@body))))))))
 
-(defun start-server (port)
-  (start (make-instance 'easy-acceptor :port port)))
 
 (define-easy-handler (app :uri "/") () 
     (redirect "/todo"))
@@ -77,4 +72,17 @@
     (setf *todolist* (remove (todo-from-name name) *todolist*))
     (redirect "/todo"))
 
-(start-server 3000)
+(defvar *acceptor* nil)
+
+(defun initialize-application (&key port)
+  (setf hunchentoot:*dispatch-table*
+    `(hunchentoot:dispatch-easy-handlers
+       ,(hunchentoot:create-folder-dispatcher-and-handler
+          "/" "/app/static/")))
+
+  (when *acceptor*
+    (hunchentoot:stop *acceptor*))
+
+  (setf *acceptor*
+    (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port port))))
+

@@ -1,6 +1,0 @@
-(in-package :cl-user)
-(print ">>> Building system....")
-;(load (make-pathname :directory *build-dir* :defaults "todolisp.asd"))
-(load (merge-pathnames "todolisp.asd" *build-dir*))
-(ql:quickload :todolisp)
-(print ">>> Done building system")
